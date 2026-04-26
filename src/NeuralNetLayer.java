@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NeuralNetLayer {
 
@@ -42,6 +44,23 @@ public class NeuralNetLayer {
 			}
 		}
 		return language;
+	}
+
+	public Map<String, Double> getLanguageProbabilities(double[] inputs) {
+		if (this.languages.size() != perceptrons.size()) {
+			throw new IllegalArgumentException("Number of languages and perceptrons do not match");
+		}
+
+		double maxScore = Double.NEGATIVE_INFINITY;
+		Map<String, Double> results = new HashMap<String, Double>();
+		normalizeInputs(inputs);
+		for (int i = 0; i < this.perceptrons.size(); i++) {
+			Perceptron perceptron = this.perceptrons.get(i);
+			perceptron.normalizeWeights();
+			double score = perceptron.calculateScore(inputs);
+			results.put(this.languages.get(i), score);
+		}
+		return results;
 	}
 
 	private void normalizeInputs(double[] inputs) {
