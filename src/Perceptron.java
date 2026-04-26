@@ -35,6 +35,14 @@ public class Perceptron {
 		return NET < 0 ? 0 : 1;
 	}
 
+	public double calculateScore(double[] inputs) {
+		double result = 0.0;
+		for (int i = 0; i < inputs.length; i++) {
+			result += inputs[i] * this.weights[i];
+		}
+		return result;
+	}
+
 	private static double dotProduct(double[] v1, double[] v2) {
 		if (v1.length != v2.length) {
 			throw new IllegalArgumentException("Długość ma znaczenie!");
@@ -57,8 +65,8 @@ public class Perceptron {
 			return;
 		}
 
-		for (double weight : this.weights) {
-			weight /= normalization;
+		for (int i = 0; i < this.weights.length; i++) {
+			this.weights[i] /= normalization;
 		}
 	}
 }
